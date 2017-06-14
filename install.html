@@ -8,9 +8,11 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Installation Guide &mdash; Lime 0.1.0 documentation</title>
+  <title>Installation Guide &mdash; LIME 0.3.0 documentation</title>
   
 
+  
+  
   
   
 
@@ -33,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="Lime 0.1.0 documentation" href="index.html"/>
+    <link rel="top" title="LIME 0.3.0 documentation" href="index.html"/>
         <link rel="next" title="Reference Manual" href="reference/index.html"/>
         <link rel="prev" title="Welcome to Lime’s documentation!" href="index.html"/> 
 
@@ -44,6 +46,7 @@
 
 <body class="wy-body-for-nav" role="document">
 
+   
   <div class="wy-grid-for-nav">
 
     
@@ -53,7 +56,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> Lime
+            <a href="index.html" class="icon icon-home"> LIME
           
 
           
@@ -63,7 +66,7 @@
             
             
               <div class="version">
-                0.1.0
+                0.3.0
               </div>
             
           
@@ -84,7 +87,10 @@
           
             
             
-                <ul class="current">
+              
+            
+            
+              <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Installation Guide</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#download">Download</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#c-c">C/C++</a></li>
@@ -104,8 +110,10 @@
 
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="index.html">Lime</a>
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">LIME</a>
+        
       </nav>
 
 
@@ -114,23 +122,42 @@
         <div class="rst-content">
           
 
- 
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 <div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="index.html">Docs</a> &raquo;</li>
-      
-    <li>Installation Guide</li>
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Installation Guide</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
-            <a href="_sources/install.txt" rel="nofollow"> View page source</a>
+            
+            
+              <a href="https://github.com///blob/install.rst" class="fa fa-github"> Edit on GitHub</a>
+            
           
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
@@ -153,9 +180,25 @@ your program source codes.</p>
 </div>
 <div class="section" id="python">
 <h2>Python<a class="headerlink" href="#python" title="Permalink to this headline">¶</a></h2>
-<p>For Python users, you can build the library with CMake. After building it,
-you can install it normally with <code class="docutils literal"><span class="pre">setup.py</span></code>. Following is the simple
-installation steps.</p>
+<p>For Python users, you can build the library with CMake. While <cite>lime</cite> depends
+on <cite>OpenCV</cite> and <cite>boost python/numpy</cite>, you need to install these libraries beforehands.
+Please make sure, the versions of these libraries meet the following requirements.</p>
+<ul class="simple">
+<li>OpenCV 3.0 or higher</li>
+<li>Boost 1.63 or higher and build boost-python and boost-numpy</li>
+</ul>
+<p>When you intall Boost libraries, please carefully check that Boost build uses correct Python headers and libraries.
+Generally, the Boost installation from source codes would be like following.</p>
+<div class="highlight-shell"><div class="highlight"><pre><span></span>wget -q https://dl.bintray.com/boostorg/release/1.64.0/source/boost_1_64_0.tar.gz
+tar -zxf boost_1_64_0.tar.gz
+<span class="nb">cd</span> boost_1_64_0
+./bootstrap.sh
+./b2 address-model<span class="o">=</span><span class="m">64</span> <span class="se">\</span>
+  <span class="nv">include</span><span class="o">=</span><span class="nv">$YOUR_PYTHON_INCLUDE_DIR</span> <span class="se">\</span>
+  -d0 --with-python -j2 install .
+</pre></div>
+</div>
+<p>After install these libraries, you can build and install the python library with following shell script.</p>
 <div class="highlight-shell"><div class="highlight"><pre><span></span>git clone https://github.com/tatsy/lime.git
 mkdir build <span class="o">&amp;&amp;</span> <span class="nb">cd</span> build
 cmake -D <span class="nv">LIME_BUILD_EXAMPLES</span><span class="o">=</span>OFF <span class="se">\</span>
@@ -166,22 +209,38 @@ make
 sudo python setup.py
 </pre></div>
 </div>
-<p>While building the source codes with CMake, you may ought to specify your
-python include and library directories.</p>
+<p>If you use the Anaconda, you may have to specify Python include directory and library paths like following.</p>
+<div class="highlight-shell"><div class="highlight"><pre><span></span>git clone https://github.com/tatsy/lime.git
+mkdir build <span class="o">&amp;&amp;</span> <span class="nb">cd</span> build
+cmake -D <span class="nv">LIME_BUILD_EXAMPLES</span><span class="o">=</span>OFF <span class="se">\</span>
+      -D <span class="nv">LIME_BUILD_TESTS</span><span class="o">=</span>OFF <span class="se">\</span>
+      -D <span class="nv">LIME_BUILD_PYTHON_MODULE</span><span class="o">=</span>ON <span class="se">\</span>
+      -D <span class="nv">PYTHON_INCLUDE_DIR</span><span class="o">=</span><span class="nv">$YOUR_PYTHON_INCLUDE_DIR</span> <span class="se">\</span>
+      -D <span class="nv">PYTHON_LIBRARY</span><span class="o">=</span><span class="nv">$YOUR_PYTHON_LIBRARY</span> ..
+make
+<span class="nb">cd</span> ..
+sudo python setup.py
+</pre></div>
+</div>
+<p>If the installation is failed, you should check whether <cite>lime</cite> binary file appears in ‘build/lib’ directory
+(the name of the binary would be <cite>lime.pyd</cite> (Windows), ‘liblime.dylib’ (MacOS) or ‘lime.so’ (Linux)).</p>
 </div>
 </div>
 
 
+           </div>
+           <div class="articleComments">
+            
            </div>
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="reference/index.html" class="btn btn-neutral float-right" title="Reference Manual" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="reference/index.html" class="btn btn-neutral float-right" title="Reference Manual" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="index.html" class="btn btn-neutral" title="Welcome to Lime’s documentation!" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="index.html" class="btn btn-neutral" title="Welcome to Lime’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -190,7 +249,7 @@ python include and library directories.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright MIT License 2016, Tatsuya Yatagawa (tatsy).
+        &copy; Copyright MIT License 2016-2017, Tatsuya Yatagawa (tatsy).
 
     </p>
   </div>
@@ -212,16 +271,17 @@ python include and library directories.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.1.0',
+            VERSION:'0.3.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
         };
     </script>
       <script type="text/javascript" src="_static/jquery.js"></script>
       <script type="text/javascript" src="_static/underscore.js"></script>
       <script type="text/javascript" src="_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 
